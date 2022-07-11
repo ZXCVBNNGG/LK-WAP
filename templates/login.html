@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <title>登录-轻之国度</title>
+
+    <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+</head>
+<body>
+{% include "header.jinja2" %}
+<br>
+<form action="/login" method="post">
+    <label for="username">用户名/邮箱：</label><br>
+    <input id="username" name="username" type="text"><br>
+    <label for="password">密码：</label><br>
+    <input id="password" name="password" type="text"><br>
+    <button type="submit">登录</button>
+</form>
+{% include "footer.jinja2" %}
+</body>
+</html>

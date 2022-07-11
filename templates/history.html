@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>历史-轻之国度</title>
+</head>
+<body>
+{% include "header.jinja2" %}
+
+{% macro url_gen(page=1) -%}
+    {% set args = dict(request.args)%}
+    {{- "" if not args.update({"page": page}) -}}
+    {{ url_for(request.endpoint, **args) }}
+{%- endmacro %}
+
+<div class="chooser">
+    {% if h_class == "article" %}
+    分类：文章|<a href="?class=series">合集</a><br>
+    {% if h_type == "normal" %}
+    类别：文章|<a href="?class=article&type=other">其他</a>
+    {% elif h_type == "other" %}
+    类别：<a href="?class=article&type=normal">文章</a>|其他
+    {% endif %}
+    {% elif h_class == "series" %}
+    分类：<a href="?class=article">文章</a>|合集<br>
+    {% if h_type == "normal" %}
+    类别：合集|<a href="?class=series&type=other">其他</a>
+    {% elif h_type == "other" %}
+    类别：<a href="?class=series&type=normal">合集</a>|其他
+    {% endif %}
+    {% endif %}
+</div>
+
+<div class="history">
+    {% if h_class == "article" %}
+    {% for i in history.list %}
+    <a href="/article/{{ i.aid }}">{{ i.title }}</a><br>
+    {% endfor %}
+    {% elif h_class == "series" %}
+    {% for i in history.list %}
+    <a href="/series/{{ i.sid }}">{{ i.name }}</a><br>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<div class="page">
+    {% if history.page_info.has_prev == 0 %}
+    上页
+    {% else %}
+    <a href="{{ url_gen(page_info.prev) }}">上页</a>
+    {% endif %}
+    [Page {{ page_info.cur }}]
+    {% if page_info.has_next == 0 %}
+    下页
+    {% else %}
+    <a href="{{ url_gen(page_info.next) }}">下页</a>
+    {% endif %}
+</div>
+{% include "footer.jinja2" %}
+</body>
+</html>

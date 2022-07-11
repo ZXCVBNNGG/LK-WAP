@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <title>轻小说版-轻之国度</title>
+
+    <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+</head>
+<body>
+
+{% include "header.jinja2" %}
+
+<div class="sub-category">
+    {% for i in category %}
+    <a href="/category/{{ i.gid }}">{{ t_to_s(i.name) }}</a>
+    {% endfor %}
+</div>
+<br>
+<div class="newest-articles">
+    {% for i in articles.list %}
+    <a href="/article/{{ i.aid }}">{{ t_to_s(i.title) }}</a><br>
+    {% endfor %}
+</div>
+{% include "footer.jinja2" %}
+</body>
+</html>

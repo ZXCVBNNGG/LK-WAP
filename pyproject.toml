@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "lk-wap_new"
+version = "0.1.0"
+description = ""
+authors = ["0x7FFFFF <w13657804853@163.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Jinja2 = "^3.1.2"
+requests = "^2.28.0"
+Flask = "^2.1.2"
+zhconv = "^1.4.3"
+pydantic = "^1.9.1"
+tinydb = "^4.7.0"
+regex = "^2022.6.2"
+bbcode = "^1.1.0"
+
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

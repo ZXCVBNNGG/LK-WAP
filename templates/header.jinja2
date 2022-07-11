@@ -1,0 +1,5 @@
+{% block header %}
+<div class="header">
+    {% if user == None %}<a href="/login">登录</a>{% else %}{{ user.nickname }}{% endif %} <a href="/">首页</a> <a href="/bookmark">收藏</a> <a href="/history">历史</a>
+</div>
+{% endblock %}

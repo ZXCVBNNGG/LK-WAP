@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>{{ detail.title }}</title>
+</head>
+<body>
+{% include "header.jinja2" %}
+<div class="article-header">
+    {% if detail.sid == 0 %}
+    查看合集
+    {% else %}
+    <a href="/series/{{ detail.sid }}">查看合集</a>
+    {% endif %}
+    <a href="/bookmark/add?aid={{ detail.aid }}">加入书签</a>
+    {% if not fulltext %}
+    <a href="/article/{{ detail.aid }}?fulltext=1">全文模式</a>
+    {% else %}
+    <a href="/article/{{ detail.aid }}">分页模式</a>
+    {% endif %}
+</div>
+<div class="time">
+    时间 {{ time }}
+</div>
+<div class="page-header">
+    {% if series_page_info %}
+    {% if series_page_info.has_next %}
+    <a href="/article/{{ series_page_info.next }}">下章</a>
+    {% endif %}
+    {% if series_page_info.has_prev %}
+    <a href="/article/{{ series_page_info.prev }}">上章</a>
+    {% endif %}
+    {% endif %}
+    <br>
+    {% if page_info.has_next %}
+    <a href="/article/{{ detail.aid }}?page={{ page_info.next }}">下页</a>
+    {% endif %}
+    {% if page_info.count != 1 %}
+    [{{ page_info.cur }}/{{ page_info.count }}]
+    {% endif %}
+    {% if page_info.has_prev %}
+    <a href="/article/{{ detail.aid }}?page={{ page_info.prev }}">上页</a>
+    {% endif %}
+    {% if page_info.count != 1 %}
+    <form action="/article/{{ detail.aid }}" method="get">
+        <input name="page" type="text">
+        <button type="submit">跳转</button>
+    </form>
+    {% endif %}
+</div>
+<br>
+<div class="content">
+    {{ t_to_s(content) | safe}}
+</div>
+<br>
+<div class="page-footer">
+    {% if series_page_info %}
+    {% if series_page_info.has_next %}
+    <a href="/article/{{ series_page_info.next }}">下章</a>
+    {% endif %}
+    {% if series_page_info.has_prev %}
+    <a href="/article/{{ series_page_info.prev }}">上章</a>
+    {% endif %}
+    {% endif %}
+    <br>
+    {% if page_info.has_next %}
+    <a href="/article/{{ detail.aid }}?page={{ page_info.next }}">下页</a>
+    {% endif %}
+    {% if page_info.count != 1 %}
+    [{{ page_info.cur }}/{{ page_info.count }}]
+    {% endif %}
+    {% if page_info.has_prev %}
+    <a href="/article/{{ detail.aid }}?page={{ page_info.prev }}">上页</a>
+    {% endif %}
+    {% if page_info.count != 1 %}
+    <form action="/article/{{ detail.aid }}" method="get">
+        <input name="page" type="text">
+        <button type="submit">跳转</button>
+    </form>
+    {% endif %}
+</div>
+{% include "header.jinja2" %}
+<br>
+{% include "footer.jinja2" %}
+</body>
+</html>

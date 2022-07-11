@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>{{ t_to_s(a_detail.name) }}-轻之国度</title>
+</head>
+<body>
+{% include "header.jinja2" %}
+<div class="sub-category">
+    {% for i in category %}
+    {% if i.name == a_detail.name %}
+    {{ t_to_s(i.name) }}
+    {% else %}
+    <a href="/category/{{ i.gid }}">{{ t_to_s(i.name) }}</a>
+    {% endif %}
+    {% endfor %}
+</div>
+<br>
+<div class="articles">
+    {% for i in articles.list %}
+    <a href="/article/{{ i.aid }}">{{ t_to_s(i.title) }}</a><br>
+    {% endfor %}
+</div>
+<div class="page">
+    {% if articles.page_info.has_prev == 0 %}
+    首页
+    上页
+    {% else %}
+    <a href="/category/{{ a_detail.gid }}?page=1">首页</a>
+    <a href="/category/{{ a_detail.gid }}?page={{ articles.page_info.prev }}">上页</a>
+    {% endif %}
+    [{{ articles.page_info.cur }}/{{ articles.page_info.count }}]
+    {% if articles.page_info.has_next == 0 %}
+    下页
+    末页
+    {% else %}
+    <a href="/category/{{ a_detail.gid }}?page={{ articles.page_info.next }}">下页</a>
+    <a href="/category/{{ a_detail.gid }}?page={{ articles.page_info.count }}">末页</a>
+    {% endif %}
+</div>
+{% include "footer.jinja2" %}
+</body>
+</html>
