@@ -1,4 +1,4 @@
-import time
+from datetime import datetime, timezone, timedelta
 
 from flask import Blueprint, request, session, render_template
 
@@ -8,6 +8,16 @@ from src.pager import pager
 from src.img_replace import img_replace
 
 article_page = Blueprint("article", __name__, template_folder='templates')
+
+
+def is_latest_of_article(aid: int, last_time: str):
+    a = a_api.get_info(aid, simple=1)
+    return last_time == a.last_time
+
+
+def is_latest_of_series(sid: int, last_time: str):
+    s = s_api.get_info(sid)
+    return last_time == s.last_time
 
 
 @article_page.route("/article/<aid>")
@@ -20,7 +30,7 @@ def article(aid: int):
     read_c = read_config.get(-1 if not user else user.uid)
     page_size = 1000 if not read_c else read_c.characters_num_per_page
     article_detail = page_cache.get(aid)
-    if not article_detail:
+    if not article_detail or not is_latest_of_article(aid, "" if not article_detail else article_detail.last_time):
         article_detail = a_api.get_detail(aid, "" if not user else user.security_key)
         page_cache.set(article_detail)
     if not fulltext:
@@ -33,7 +43,7 @@ def article(aid: int):
         content = article_detail.content
     if article_detail.sid:
         series_info = series_cache.get(article_detail.sid)
-        if not series_info:
+        if not series_info or not is_latest_of_series(article_detail.sid, "" if not series_info else series_info.last_time):
             series_info = s_api.get_info(article_detail.sid)
             series_cache.set(series_info)
         cur = series_info.articles.index(next((x for x in series_info.articles if x.aid == aid), None)) + 1
@@ -50,7 +60,7 @@ def article(aid: int):
         series_page_info = None
     if user:
         h_api.add_history(1, aid, user.security_key)
-    r_time = time.strftime("%H:%M", time.localtime())
+    r_time = datetime.now(timezone(timedelta(hours=8))).strftime("%H:%M")
     return img_replace(render_template("article.html", detail=article_detail, time=r_time, page_info=page_info,
                                        series_page_info=series_page_info, content=content, user=user,
                                        fulltext=fulltext))
