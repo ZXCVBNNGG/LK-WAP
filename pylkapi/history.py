@@ -5,7 +5,7 @@ from .models.response.history import *
 
 
 class HistoryAPI(BasicAPI):
-    def add(self, class_: int, fid: int, security_key: str):
+    def add_history(self, class_: int, fid: int, security_key: str):
         """
          :param class_: 历史分类 1：文章 2：合集
          :param fid: 文章或合集ID
@@ -13,10 +13,16 @@ class HistoryAPI(BasicAPI):
         """
         path = "/api/history/add-history"
         r = self._request(path, AddHistoryBody.parse_obj({"class": class_, "fid": fid, "security_key": security_key}))
-        t = BasicResponse[AddHistoryBody].parse_obj(r)
-        return t.data
+        t = BasicResponse.parse_obj(r)
+        return t
 
-    def get(self, class_: int, page: int, page_size: int, security_key: str, type_: int, uid: int):
+    def del_history(self, class_: int, fid: int, security_key: str):
+        path = "/api/history/del-history"
+        r = self._request(path, AddHistoryBody.parse_obj({"class": class_, "fid": fid, "security_key": security_key}))
+        t = BasicResponse.parse_obj(r)
+        return t
+
+    def get_history(self, class_: int, page: int, page_size: int, security_key: str, type_: int, uid: int):
         """
         :param class_: 历史分类 1：文章 2：合集
         :param page: 页数
@@ -36,6 +42,25 @@ class HistoryAPI(BasicAPI):
         t = BasicResponse[GetHistoryResponse].parse_obj(r)
         return t.data
 
-    def get_collection(self):
-        # TODO 收藏
-        pass
+    def get_collection(self, class_: int, page: int, page_size: int, security_key: str, type_: int, uid: int):
+        path = "/api/history/get-collections"
+        r = self._request(path, GetHistoryBody.parse_obj({"class": class_,
+                                                          "page": page,
+                                                          "page_size": page_size,
+                                                          "security_key": security_key,
+                                                          "type": type_,
+                                                          "uid": uid}))
+        t = BasicResponse[GetHistoryResponse].parse_obj(r)
+        return t.data
+
+    def del_collection(self,  class_: int, fid: int, security_key: str):
+        path = "/api/history/del-collection"
+        r = self._request(path, AddHistoryBody.parse_obj({"class": class_, "fid": fid, "security_key": security_key}))
+        t = BasicResponse.parse_obj(r)
+        return t
+
+    def add_collection(self,  class_: int, fid: int, security_key: str):
+        path = "/api/history/add-collection"
+        r = self._request(path, AddHistoryBody.parse_obj({"class": class_, "fid": fid, "security_key": security_key}))
+        t = BasicResponse.parse_obj(r)
+        return t

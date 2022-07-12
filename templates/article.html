@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>{{ detail.title }}</title>
+    <title>{{ detail.title }}-轻之国度</title>
 </head>
 <body>
 {% include "header.jinja2" %}
@@ -12,7 +12,7 @@
     {% else %}
     <a href="/series/{{ detail.sid }}">查看合集</a>
     {% endif %}
-    <a href="/bookmark/add?aid={{ detail.aid }}">加入书签</a>
+    <a href="/add_bookmark?fid={{ detail.aid }}&class=article">加入书签</a>
     {% if not fulltext %}
     <a href="/article/{{ detail.aid }}?fulltext=1">全文模式</a>
     {% else %}

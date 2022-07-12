@@ -7,6 +7,9 @@ from src.blueprints.article import article_page
 from src.blueprints.login import login_page
 from src.blueprints.home import home_page
 from src.blueprints.category import category_page
+from src.blueprints.series import series_page
+from src.blueprints.img_proxy import img_proxy
+from src.blueprints.bookmark import bookmark_page
 
 from pylkapi.exception import PyLKApiException
 
@@ -18,6 +21,9 @@ app.register_blueprint(history_page)
 app.register_blueprint(article_page)
 app.register_blueprint(login_page)
 app.register_blueprint(category_page)
+app.register_blueprint(series_page)
+app.register_blueprint(img_proxy)
+app.register_blueprint(bookmark_page)
 
 
 @app.errorhandler(HTTPError)

@@ -31,14 +31,14 @@
     {% endif %}
 </div>
 
-<div class="history">
+<div class="bookmark">
     {% if h_class == "article" %}
-    {% for i in history.list %}
-    <a href="/article/{{ i.aid }}">{{ i.title }}</a> <a href="/del_history?class=article&fid={{ i.aid }}">[删]</a><br>
+    {% for i in bookmark.list %}
+    <a href="/article/{{ i.aid }}">{{ i.title }}</a> <a href="/del_bookmark?class=article&fid={{ i.aid }}">[删]</a><br>
     {% endfor %}
     {% elif h_class == "series" %}
-    {% for i in history.list %}
-    <a href="/series/{{ i.sid }}">{{ i.name }}</a> <a href="/del_history?class=series&fid={{ i.aid }}">[删]</a><br>
+    {% for i in bookmark.list %}
+    <a href="/series/{{ i.sid }}">{{ i.name }}</a> <a href="/del_bookmark?class=series&fid={{ i.sid }}">[删]</a><br>
     {% endfor %}
     {% endif %}
 </div>
@@ -50,7 +50,7 @@
     <a href="{{ url_gen(page_info.prev) }}">上页</a>
     {% endif %}
     [Page {{ page_info.cur }}]
-    {% if page_info.has_next == 0 %}
+    {% if bookmark.page_info.has_next == 0 %}
     下页
     {% else %}
     <a href="{{ url_gen(page_info.next) }}">下页</a>

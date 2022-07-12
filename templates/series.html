@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <title>{{ series.name }}-轻之国度</title>
+
+    <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+</head>
+<body>
+
+{% include "header.jinja2" %}
+
+<div class="series-info">
+    <img src="{{ series.cover }}"><br>
+    {{ series.name }}<br>
+    作者：{{ series.author }}<br>
+    翻译者：{% for i in series.editors %}{{ i.nickname }} {% endfor %}<br>
+    最近更新时间：{{ series.last_time }}<br>
+    <a href="/add_bookmark?class=series&fid={{series.sid}}">加入收藏</a>
+</div>
+<br>
+<div class="series-articles">
+    合集帖子：<br>
+    {% for i in series.articles %}
+    <a href="/article/{{ i.aid }}">{{ i.title }}</a><br>
+    {% endfor %}
+</div>
+{% include "footer.jinja2" %}
+</body>
+</html>

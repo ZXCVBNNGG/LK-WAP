@@ -5,6 +5,7 @@ from flask import Blueprint, request, session, render_template
 from pylkapi.models.response.basic import SimplePageInfo
 from src.blueprints import db_session, read_config, page_cache, series_cache, s_api, a_api, h_api
 from src.pager import pager
+from src.img_replace import img_replace
 
 article_page = Blueprint("article", __name__, template_folder='templates')
 
@@ -44,11 +45,12 @@ def article(aid: int):
         series_page_info = SimplePageInfo(count=len(series_info.articles), cur=cur, next=s_next, prev=s_prev,
                                           has_prev=has_prev, has_next=has_next)
         if user:
-            h_api.add(2, article_detail.sid, user.security_key)
+            h_api.add_history(2, article_detail.sid, user.security_key)
     else:
         series_page_info = None
     if user:
-        h_api.add(1, aid, user.security_key)
+        h_api.add_history(1, aid, user.security_key)
     r_time = time.strftime("%H:%M", time.localtime())
-    return render_template("article.html", detail=article_detail, time=r_time, page_info=page_info,
-                           series_page_info=series_page_info, content=content, user=user, fulltext=fulltext)
+    return img_replace(render_template("article.html", detail=article_detail, time=r_time, page_info=page_info,
+                                       series_page_info=series_page_info, content=content, user=user,
+                                       fulltext=fulltext))
