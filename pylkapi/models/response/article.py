@@ -18,7 +18,7 @@ class GetDetailResponse(BasicSubResponseModel):
     uid: int
     title: str
     summary: str
-    content: str
+    content: Optional[str]
     hits: int
     likes: int
     coins: int

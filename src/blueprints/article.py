@@ -11,7 +11,7 @@ article_page = Blueprint("article", __name__, template_folder='templates')
 
 
 def is_latest_of_article(aid: int, last_time: str):
-    a = a_api.get_info(aid, simple=1)
+    a = a_api.get_detail(aid, simple=1)
     return last_time == a.last_time
 
 
