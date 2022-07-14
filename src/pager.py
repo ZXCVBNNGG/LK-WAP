@@ -1,4 +1,6 @@
-from bs4 import BeautifulSoup
+from typing import List
+
+from bs4 import BeautifulSoup, NavigableString
 import cchardet
 import functools
 from .debug import clock
@@ -11,11 +13,23 @@ def real_contents_guess(b):
         return real_contents_guess(b.contents[0])
 
 
+def final_child_tags_get(contents):
+    child_tags = []
+    for i in contents:
+        if type(i) == NavigableString:
+            child_tags.append(i)
+            continue
+        if len(i.contents) == 1 or len(i.contents) == 0:
+            child_tags.append(i)
+        else:
+            child_tags.extend(final_child_tags_get(i.contents))
+    return child_tags
+
 @clock
 @functools.cache
 def pager(content: str, page_size: int):
     b = BeautifulSoup(content, features="lxml")
-    real_contents = real_contents_guess(b)
+    real_contents = final_child_tags_get(real_contents_guess(b))
     results = []
     cache = ""
     count = 0

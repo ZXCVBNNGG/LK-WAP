@@ -1,9 +1,13 @@
+import functools
+
 import requests
 from flask import Blueprint, request, make_response
 from PIL import Image
 import pillow_avif
 from io import BytesIO
 from tenacity import retry, stop_after_attempt
+
+from src.debug import clock
 
 img_proxy = Blueprint("img_proxy", __name__)
 
@@ -17,16 +21,23 @@ def to_jpeg(img: bytes):
 
 @img_proxy.route("/image_proxy")
 def img_proxy_handler():
-    resp = make_response(to_jpeg(downloader(request.args.get("url"))))
+    resp = make_response(get_image_content(request.args.get("url")))
     resp.headers["Content-Type"] = "image/*"
     return resp
+
+
+@clock
+@functools.cache
+def get_image_content(url):
+    return to_jpeg(downloader(url))
 
 
 @retry(stop=stop_after_attempt(3))
 def downloader(url, content_size=1024 * 128):
     headers = {"user-agent": 'Dart/2.10 (dart:io)'}
-    res = requests.get(url, stream=True, headers=headers)
-    result = BytesIO()
-    for chunk in res.iter_content(content_size):
-        result.write(chunk)
-    return result.getvalue()
+    # res = requests.get(url, stream=True, headers=headers)
+    # result = BytesIO()
+    # for chunk in res.iter_content(content_size):
+    #     result.write(chunk)
+    # return result.getvalue()
+    return requests.get(url, headers=headers).content
