@@ -9,24 +9,16 @@ img_proxy = Blueprint("img_proxy", __name__)
 
 
 def to_jpeg(img: bytes):
-    result = Image.open(BytesIO(img))
+    result = Image.open(BytesIO(img)).convert('RGB')
     result_img = BytesIO()
     result.save(result_img, format="JPEG")
     return result_img.getvalue()
 
 
-@img_proxy.route("/res_image_proxy/<path:subpath>")
-def res_img_proxy_handler(subpath: str):
-    resp = make_response(to_jpeg(downloader(f"https://res.lightnovel.us{request.full_path.replace('/res_image_proxy', '')}")))
-    resp.headers["Content-Type"] = "image/jpeg"
-    return resp
-
-
-@img_proxy.route("/noire_image_proxy/<path:subpath>")
-def noire_img_proxy_handler(subpath: str):
-
-    resp = make_response(to_jpeg(downloader(f"https://i.noire.cc{request.full_path.replace('/noire_image_proxy', '')}")))
-    resp.headers["Content-Type"] = "image/jpeg"
+@img_proxy.route("/image_proxy")
+def img_proxy_handler():
+    resp = make_response(to_jpeg(downloader(request.args.get("url"))))
+    resp.headers["Content-Type"] = "image/*"
     return resp
 
 

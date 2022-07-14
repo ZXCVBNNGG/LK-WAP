@@ -43,4 +43,7 @@ def t_to_s(content: str):
 jinja_env.globals["t_to_s"] = t_to_s
 
 if __name__ == "__main__":
+    #    from werkzeug.middleware.profiler import ProfilerMiddleware
+
+    #    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, profile_dir="profiles")
     app.run()

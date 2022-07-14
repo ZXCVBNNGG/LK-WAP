@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+import cchardet
+import functools
 from .debug import clock
 
 
@@ -8,7 +10,9 @@ def real_contents_guess(b):
     else:
         return real_contents_guess(b.contents[0])
 
+
 @clock
+@functools.cache
 def pager(content: str, page_size: int):
     b = BeautifulSoup(content, features="lxml")
     real_contents = real_contents_guess(b)
@@ -22,8 +26,6 @@ def pager(content: str, page_size: int):
             count = 0
         cache = cache + str(i)
         count += len(i.get_text())
-        if real_contents.index(i) == len(real_contents) - 1:
-            results.append(cache)
-            cache = ""
-            count = 0
+    results.append(cache)
+
     return results
