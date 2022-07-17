@@ -20,21 +20,3 @@ class PageCache:
 
     def remove(self, aid: int):
         self.db.remove(self.query.aid == aid)
-
-
-class SeriesCache:
-    db = TinyDB("data/series_cache.json")
-    query = Query()
-
-    def get(self, sid: int):
-        r = self.db.search(self.query.sid == sid)
-        if r:
-            return GetSeriesInfoResponse.parse_obj(r[0])
-        else:
-            return None
-
-    def set(self, response: GetSeriesInfoResponse):
-        self.db.insert(response.dict())
-
-    def remove(self, sid: int):
-        self.db.remove(self.query.sid == sid)
