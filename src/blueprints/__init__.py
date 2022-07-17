@@ -1,5 +1,5 @@
 from pylkapi import *
-from src.cache import PageCache, SeriesCache
+from src.cache import PageCache
 from src.read_config import ReadConfig
 from src.session import Session
 
@@ -10,6 +10,5 @@ a_api = ArticleAPI()
 s_api = SeriesAPI()
 h_api = HistoryAPI()
 page_cache = PageCache()
-series_cache = SeriesCache()
 read_config = ReadConfig()
 PageSize = 40

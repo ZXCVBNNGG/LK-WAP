@@ -3,7 +3,7 @@ from datetime import datetime, timezone, timedelta
 from flask import Blueprint, request, session, render_template
 
 from pylkapi.models.response.basic import SimplePageInfo
-from src.blueprints import db_session, read_config, page_cache, series_cache, s_api, a_api, h_api
+from src.blueprints import db_session, read_config, page_cache, s_api, a_api, h_api
 from src.pager import pager
 from src.img_replace import img_replace
 
