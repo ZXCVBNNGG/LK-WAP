@@ -5,6 +5,12 @@ from tinydb import TinyDB, Query
 class ReadConfigModel(BaseModel):
     uid: int
     characters_num_per_page: int
+    image_compress: bool
+    auto_fulltext: bool
+    force_simplified: bool
+    no_picture_mode: bool
+    auto_fulltext_num: int
+
 
 
 class ReadConfig:
