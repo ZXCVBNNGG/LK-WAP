@@ -1,5 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template
 
+import src.blueprints.utils
 from pylkapi.exception import PyLKApiException
 from src.blueprints import u_api, db_session
 

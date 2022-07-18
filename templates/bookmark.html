@@ -34,11 +34,11 @@
 <div class="bookmark">
     {% if h_class == "article" %}
     {% for i in bookmark.list %}
-    <a href="/article/{{ i.aid }}">{{ i.title }}</a> <a href="/del_bookmark?class=article&fid={{ i.aid }}">[删]</a><br>
+    <a href="/article/{{ i.aid }}">{{ t_to_s(i.title) }}</a> <a href="/del_bookmark?class=article&fid={{ i.aid }}">[删]</a><br>
     {% endfor %}
     {% elif h_class == "series" %}
     {% for i in bookmark.list %}
-    <a href="/series/{{ i.sid }}">{{ i.name }}</a> <a href="/del_bookmark?class=series&fid={{ i.sid }}">[删]</a><br>
+    <a href="/series/{{ i.sid }}">{{ t_to_s(i.name) }}</a> <a href="/del_bookmark?class=series&fid={{ i.sid }}">[删]</a><br>
     {% endfor %}
     {% endif %}
 </div>

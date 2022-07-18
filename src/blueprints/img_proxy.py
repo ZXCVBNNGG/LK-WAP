@@ -19,17 +19,31 @@ def to_jpeg(img: bytes):
     return result_img.getvalue()
 
 
+def to_jpeg_with_compress(img: bytes):
+    result = Image.open(BytesIO(img)).convert('RGB')
+    result = result.resize((int(result.size[0]/2), int(result.size[1]/2)), Image.ANTIALIAS)
+    result_img = BytesIO()
+    result.save(result_img, format="JPEG",optimize=True,quality=50)
+    return result_img.getvalue()
+
+
 @img_proxy.route("/image_proxy")
 def img_proxy_handler():
-    resp = make_response(get_image_content(request.args.get("url")))
+    if request.args.get("compress") == "true":
+        resp = make_response(get_image_content(request.args.get("url"), compress=True))
+    else:
+        resp = make_response(get_image_content(request.args.get("url"),  compress=False))
     resp.headers["Content-Type"] = "image/*"
     return resp
 
 
 @clock
 @functools.cache
-def get_image_content(url):
-    return to_jpeg(downloader(url))
+def get_image_content(url, compress):
+    if not compress:
+        return to_jpeg(downloader(url))
+    else:
+        return to_jpeg_with_compress(downloader(url))
 
 
 @retry(stop=stop_after_attempt(3))

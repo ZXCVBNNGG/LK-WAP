@@ -4,13 +4,12 @@ from tinydb import TinyDB, Query
 
 class ReadConfigModel(BaseModel):
     uid: int
-    characters_num_per_page: int
-    image_compress: bool
-    auto_fulltext: bool
-    force_simplified: bool
-    no_picture_mode: bool
-    auto_fulltext_num: int
-
+    characters_num_per_page: int = 1000  # Done
+    image_compress: bool = False  # Done
+    auto_fulltext: bool = False
+    global_force_simplified: bool = False
+    no_picture_mode: bool = False
+    auto_fulltext_num: int = 3000
 
 
 class ReadConfig:
@@ -25,4 +24,4 @@ class ReadConfig:
         if r:
             return ReadConfigModel.parse_obj(r[0])
         else:
-            return None
+            return ReadConfigModel(uid=-1)

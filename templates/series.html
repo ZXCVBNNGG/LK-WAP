@@ -11,8 +11,8 @@
 
 <div class="series-info">
     <img src="{{ series.cover }}"><br>
-    {{ series.name }}<br>
-    作者：{{ series.author }}<br>
+    {{ t_to_s(series.name) }}<br>
+    作者：{{ t_to_s(series.author) }}<br>
     翻译者：{% for i in series.editors %}{{ i.nickname }} {% endfor %}<br>
     最近更新时间：{{ series.last_time }}<br>
     <a href="/add_bookmark?class=series&fid={{series.sid}}">加入收藏</a>
@@ -21,7 +21,7 @@
 <div class="series-articles">
     合集帖子：<br>
     {% for i in series.articles %}
-    <a href="/article/{{ i.aid }}">{{ i.title }}</a><br>
+    <a href="/article/{{ i.aid }}">{{ t_to_s(i.title) }}</a><br>
     {% endfor %}
 </div>
 {% include "footer.jinja2" %}

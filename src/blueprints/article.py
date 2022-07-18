@@ -1,10 +1,12 @@
 from datetime import datetime, timezone, timedelta
 
-from flask import Blueprint, request, session, render_template
+from flask import Blueprint, request, render_template, session
 
 from pylkapi.models.response.basic import SimplePageInfo
-from src.blueprints import db_session, read_config, page_cache, s_api, a_api, h_api
+from src.blueprints import read_config, page_cache, s_api, a_api, h_api
+from src.blueprints.utils import get_user
 from src.pager import pager
+from src.t_to_s import t_to_s, as_origin
 from src.img_replace import img_replace
 
 article_page = Blueprint("article", __name__, template_folder='templates')
@@ -20,10 +22,10 @@ def article(aid: int):
     aid = int(aid)
     fulltext = False if not request.args.get("fulltext") else True
     page = 1 if not request.args.get("page") else int(request.args.get("page"))
-    sessionid = session.get("sessionid")
-    user = db_session.get_user(sessionid=sessionid)
+    user = get_user(session)
     read_c = read_config.get(-1 if not user else user.uid)
-    page_size = 1000 if not read_c else read_c.characters_num_per_page
+    t_to_s_func = t_to_s if read_c.global_force_simplified else as_origin
+    page_size = read_c.characters_num_per_page
     article_detail = get_article_detail(aid, user)
     if not fulltext:
         contents = pager(article_detail.content, page_size)
@@ -44,7 +46,7 @@ def article(aid: int):
     r_time = datetime.now(timezone(timedelta(hours=8))).strftime("%H:%M")
     return img_replace(render_template("article.html", detail=article_detail, time=r_time, page_info=page_info,
                                        series_page_info=series_page_info, content=content, user=user,
-                                       fulltext=fulltext))
+                                       fulltext=fulltext, t_to_s=t_to_s_func), compress=read_c.image_compress)
 
 
 def get_article_detail(aid, user):

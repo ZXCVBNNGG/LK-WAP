@@ -1,17 +1,18 @@
 from flask import Blueprint, render_template, session, request
 
-from src.blueprints import db_session, h_api
+import src.blueprints.utils
+
+from src.blueprints import h_api
+from .utils import get_user
 
 bookmark_page = Blueprint("bookmark", __name__)
 
 
 @bookmark_page.route("/bookmark")
 def bookmark():
-    session.permanent = True
-    sessionid = session.get("sessionid") or ""
-    user = db_session.get_user(sessionid)
+    user = get_user(session)
     if not user:
-        return render_template("error.html", message="请登录后使用！")
+        return render_template("alert.html", message="请登录后使用！")
     class_ = 1 if not request.args.get("class") else (1 if request.args.get("class") == "article" else 2)
     type_ = 1 if not request.args.get("type") else (1 if request.args.get("type") == "normal" else 0)
     page = 1 if not request.args.get("page") else int(request.args.get("page"))
@@ -27,11 +28,9 @@ def bookmark():
 
 @bookmark_page.route("/add_bookmark")
 def add_bookmark():
-    session.permanent = True
-    sessionid = session.get("sessionid") or ""
-    user = db_session.get_user(sessionid)
+    user = get_user(session)
     if not user:
-        return render_template("error.html", message="请登录后使用！")
+        return render_template("alert.html", message="请登录后使用！")
     class_ = 1 if not request.args.get("class") else (1 if request.args.get("class") == "article" else 2)
     fid = int(request.args.get("fid"))
     h_api.add_collection(class_, fid, security_key=user.security_key)
@@ -42,9 +41,9 @@ def add_bookmark():
 def del_bookmark():
     session.permanent = True
     sessionid = session.get("sessionid") or ""
-    user = db_session.get_user(sessionid)
+    user = src.blueprints.utils.get_user(sessionid)
     if not user:
-        return render_template("error.html", message="请登录后使用！")
+        return render_template("alert.html", message="请登录后使用！")
     class_ = 1 if not request.args.get("class") else (1 if request.args.get("class") == "article" else 2)
     fid = int(request.args.get("fid"))
     h_api.del_collection(class_, fid, security_key=user.security_key)

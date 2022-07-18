@@ -28,19 +28,13 @@ app.register_blueprint(bookmark_page)
 
 @app.errorhandler(HTTPError)
 def handle_http_error(e: HTTPError):
-    return render_template("error.html", message="LK服务器维护中！请耐心等待维护结束。")
+    return render_template("alert.html", message="LK服务器维护中！请耐心等待维护结束。")
 
 
 @app.errorhandler(PyLKApiException)
 def handle_lkapi_error(e: PyLKApiException):
-    return render_template("error.html", message=f"API返回值与预期不符！错误代码：{e.code}")
+    return render_template("alert.html", message=f"API返回值与预期不符！错误代码：{e.code}")
 
-
-def t_to_s(content: str):
-    return convert(content, "zh-cn")
-
-
-jinja_env.globals["t_to_s"] = t_to_s
 
 if __name__ == "__main__":
     #    from werkzeug.middleware.profiler import ProfilerMiddleware

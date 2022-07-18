@@ -1,17 +1,17 @@
 from flask import Blueprint, render_template, session, request
 
+import src.blueprints.utils
 from src.blueprints import db_session, h_api
+from .utils import get_user
 
 history_page = Blueprint("history", __name__)
 
 
 @history_page.route("/history")
 def history():
-    session.permanent = True
-    sessionid = session.get("sessionid") or ""
-    user = db_session.get_user(sessionid)
+    user = get_user(session)
     if not user:
-        return render_template("error.html", message="请登录后使用！")
+        return render_template("alert.html", message="请登录后使用！")
     class_ = 1 if not request.args.get("class") else (1 if request.args.get("class") == "article" else 2)
     type_ = 1 if not request.args.get("type") else (1 if request.args.get("type") == "normal" else 0)
     page = 1 if not request.args.get("page") else int(request.args.get("page"))
@@ -33,9 +33,9 @@ def history():
 def del_history():
     session.permanent = True
     sessionid = session.get("sessionid") or ""
-    user = db_session.get_user(sessionid)
+    user = src.blueprints.utils.get_user(sessionid)
     if not user:
-        return render_template("error.html", message="请登录后使用！")
+        return render_template("alert.html", message="请登录后使用！")
     class_ = 1 if not request.args.get("class") else (1 if request.args.get("class") == "article" else 2)
     fid = int(request.args.get("fid"))
     h_api.del_history(class_, fid, security_key=user.security_key)
