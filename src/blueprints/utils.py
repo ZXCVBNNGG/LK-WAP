@@ -12,3 +12,10 @@ def get_user(session):
 def get_content_length(content: str):
     b = BeautifulSoup(content, features="lxml")
     return len(b.text)
+
+
+def remove_img_tags(content: str):
+    b = BeautifulSoup(content, features="lxml")
+    for i in b.find_all("img"):
+        i.extract()
+    return str(b)

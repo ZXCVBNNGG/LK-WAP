@@ -8,8 +8,8 @@ class ReadConfigModel(BaseModel):
     image_compress: bool = False  # Done
     auto_fulltext: bool = False  # Done
     global_force_simplified: bool = False  # Done
-    no_picture_mode: bool = False
-    auto_fulltext_num: int = 3000
+    no_picture_mode: bool = False  # Done
+    auto_fulltext_num: int = 3000  # Done
 
 
 class ReadConfig:
