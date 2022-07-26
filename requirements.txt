@@ -11,3 +11,4 @@ beautifulsoup4
 tenacity
 lxml
 cchardet
+pillow-avif-plugin
