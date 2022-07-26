@@ -25,7 +25,7 @@ def final_child_tags_get(contents):
             child_tags.extend(final_child_tags_get(i.contents))
     return child_tags
 
-@clock
+
 @functools.cache
 def pager(content: str, page_size: int):
     b = BeautifulSoup(content, features="lxml")

@@ -37,7 +37,6 @@ def img_proxy_handler():
     return resp
 
 
-@clock
 @functools.cache
 def get_image_content(url, compress):
     if not compress:
