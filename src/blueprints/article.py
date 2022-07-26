@@ -4,7 +4,7 @@ from flask import Blueprint, request, render_template, session
 
 from pylkapi.models.response.basic import SimplePageInfo
 from src.blueprints import read_config, page_cache, s_api, a_api, h_api
-from src.blueprints.utils import get_user
+from src.blueprints.utils import get_user, get_content_length
 from src.pager import pager
 from src.t_to_s import t_to_s, as_origin
 from src.img_replace import img_replace
@@ -27,6 +27,9 @@ def article(aid: int):
     t_to_s_func = t_to_s if read_c.global_force_simplified else as_origin
     page_size = read_c.characters_num_per_page
     article_detail = get_article_detail(aid, user)
+    length = get_content_length(article_detail.content)
+    if not fulltext:
+        fulltext = False if length < read_c.auto_fulltext_num else True
     if not fulltext:
         contents = pager(article_detail.content, page_size)
         page_count = len(contents)
